@@ -3,9 +3,18 @@ spring:
     name: order-service
   datasource:
     url: jdbc:postgresql://localhost:5432/auto_orchestrator
-  username: postgres
-  password: root
-  driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
 
 server:
   port: 8081
