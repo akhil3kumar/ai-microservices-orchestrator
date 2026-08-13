@@ -1,6 +1,10 @@
 spring:
   application:
     name: workflow-orchestrator
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
 
 server:
   port: 8082
@@ -13,3 +17,13 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
   instance:
     prefer-ip-address: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      order-service: # Matches @FeignClient(name = "order-service")
+        slidingWindowSize: 10              # Evaluates last 10 calls
+        minimumNumberOfCalls: 5            # Minimum calls before evaluating failure rate
+        failureRateThreshold: 50           # Opens circuit if 50% of calls fail
+        waitDurationInOpenState: 10000ms   # Waits 10s in OPEN state before trying again (HALF-OPEN)
+        permittedNumberOfCallsInHalfOpenState: 3
